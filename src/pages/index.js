@@ -2,8 +2,8 @@ import { ArrowRightIcon, PencilSquareIcon } from "@heroicons/react/24/solid"
 
 export default function GuidedSetUp() {
   return (
-    <div className="bg-gray-200 p-2.5 h-screen">
-      <div className="bg-gradient-to-b from-white to-gray-50 rounded-[10px] p-7 h-full">
+    <div className="bg-gray-200 p-2.5 min-h-screen">
+      <div className="bg-gradient-to-b from-white to-gray-50 rounded-[10px] p-7 min-h-[calc(100vh-20px)]">
         <div className="max-w-[720px] mx-auto">
           <div className="flex justify-center items-center">
             <img src="/images/logo.svg" alt="logo" />
@@ -31,37 +31,47 @@ export default function GuidedSetUp() {
           </div>
 
           {/* Cards */}
-          <div className="bg-white flex flex-col gap-6 rounded-xl p-10 border border-gray-200">
-            <h3 className="text-2xl font-bold text-center">
-              Let's make sure we've got your business name and overview right
-              before moving on.
-            </h3>
-            <div className="min-h-28 flex items-center justify-center flex-col gap-3">
-              <div className="flex gap-4 w-full">
-                <p className="w-1/3 text-gray-800 text-right">Business Name</p>
-                <p className="w-2/3 text-black font-medium">
-                  Gratia Bakery & Cafe
-                </p>
+          <div className="relative">
+            <div className="bg-white flex flex-col gap-6 rounded-xl p-10 border border-gray-200 relative z-10">
+              <h3 className="text-2xl font-bold text-center">
+                Let's make sure we've got your business name and overview right
+                before moving on.
+              </h3>
+              <div className="min-h-28 flex items-center justify-center flex-col gap-3">
+                <div className="flex gap-4 w-full">
+                  <p className="w-1/3 text-gray-800 text-right">
+                    Business Name
+                  </p>
+                  <p className="w-2/3 text-black font-medium">
+                    Gratia Bakery & Cafe
+                  </p>
+                </div>
+                <div className="flex gap-4 w-full">
+                  <p className="w-1/3 text-gray-800 text-right">
+                    Business Phone
+                  </p>
+                  <p className="w-2/3 text-black font-medium">(555) 123-1234</p>
+                </div>
+                <div className="flex gap-4 w-full">
+                  <p className="w-1/3 text-gray-800 text-right">
+                    Business Overview
+                  </p>
+                  <p className="w-2/3 text-black font-medium">
+                    Gratia Bakery & Cafe is a bakery and cafe that serves
+                    delicious pastries and coffee.
+                  </p>
+                </div>
               </div>
-              <div className="flex gap-4 w-full">
-                <p className="w-1/3 text-gray-800 text-right">Business Phone</p>
-                <p className="w-2/3 text-black font-medium">(555) 123-1234</p>
-              </div>
-              <div className="flex gap-4 w-full">
-                <p className="w-1/3 text-gray-800 text-right">
-                  Business Overview
-                </p>
-                <p className="w-2/3 text-black font-medium">
-                  Gratia Bakery & Cafe is a bakery and cafe that serves
-                  delicious pastries and coffee.
-                </p>
+              <div className="flex justify-center">
+                <button className="bg-white border border-gray-200 rounded-full px-5 py-2.5 text-gray-950 font-medium flex items-center gap-2">
+                  Make Changes <PencilSquareIcon className="size-6" />
+                </button>
               </div>
             </div>
-            <div className="flex justify-center">
-              <button className="bg-white border border-gray-200 rounded-full px-5 py-2.5 text-gray-950 font-medium flex items-center gap-2">
-                Make Changes <PencilSquareIcon className="size-6" />
-              </button>
-            </div>
+
+            {/* X Shape - Top */}
+            <div className="absolute rounded-xl p-10 border border-gray-300/50 -right-3 top-3 flex flex-col items-center h-[calc(100%-16px)] bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2 rotate-[3deg] z-[1] ani" />
+            <div className="absolute rounded-xl p-10 border border-gray-300/50 -right-6 top-6 flex flex-col items-center h-[calc(100%-30px)] bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2 rotate-[5deg] z-0 opacity-70 ani" />
           </div>
 
           {/* Step Footer */}
