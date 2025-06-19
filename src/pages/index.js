@@ -35,7 +35,7 @@ export default function GuidedSetUp() {
             <h1 className="text-2xl font-bold">Customize your agent</h1>
             <p className="text-md text-gray-700">
               Make Rosie even more accurate for your callers by fine-tuning
-              these details about your business. Don't worry, you can make
+              these details about your business. Don&apos;t worry, you can make
               changes to these settings later.
             </p>
           </div>
