@@ -6,13 +6,15 @@ import {
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid"
 import { classNames } from "@/utils"
-import { AnimatePresence, motion } from "motion/react"
+import { AnimatePresence, LayoutGroup, motion } from "motion/react"
 
 export default function GuidedSetUp() {
   const [inEditMode, setInEditMode] = useState(false)
   const [businessName, setBusinessName] = useState("Gratia Bakery & Cafe")
   const [businessPhone, setBusinessPhone] = useState("(555) 123-1234")
-  const [businessOverview, setBusinessOverview] = useState("Gratia Bakery & Cafe is a bakery and cafe that serves delicious pastries and coffee.")
+  const [businessOverview, setBusinessOverview] = useState(
+    "Gratia Bakery & Cafe is a bakery and cafe that serves delicious pastries and coffee.",
+  )
 
   return (
     <div className="bg-gray-200 p-2.5 min-h-screen">
@@ -44,66 +46,65 @@ export default function GuidedSetUp() {
           </div>
 
           {/* Cards */}
-          <AnimatePresence mode="popLayout">
-            <motion.div
-              layout
-              transition={{ type: "tween", duration: 0.25 }}
-              className="relative"
-            >
-              <div className="bg-white flex flex-col rounded-xl border border-gray-200 z-10 relative">
-                {/* Card header */}
+          <AnimatePresence mode="wait">
+            <LayoutGroup id="card">
+              <div className="relative">
+                <div className="bg-white flex flex-col rounded-xl border border-gray-200 z-10 relative">
+                  {/* Card header */}
+                  <div
+                    className={classNames(
+                      "p-8 h-32 z-10 relative",
+                      inEditMode ? "border-b border-gray-200" : "border-none",
+                    )}
+                  >
+                    <h3 className="text-2xl font-bold text-center">
+                      Let&apos;s make sure we&apos;ve got your business name and
+                      overview right before moving on.
+                    </h3>
+                  </div>
+                  <motion.div
+                    layout
+                    transition={{ type: "tween", duration: 0.25 }}
+                    className="relative"
+                  >
+                    {inEditMode ? (
+                      <CardEdit
+                        setInEditMode={setInEditMode}
+                        businessName={businessName}
+                        setBusinessName={setBusinessName}
+                        businessPhone={businessPhone}
+                        setBusinessPhone={setBusinessPhone}
+                        businessOverview={businessOverview}
+                        setBusinessOverview={setBusinessOverview}
+                      />
+                    ) : (
+                      <CardPreview
+                        setInEditMode={setInEditMode}
+                        businessName={businessName}
+                        businessPhone={businessPhone}
+                        businessOverview={businessOverview}
+                      />
+                    )}
+                  </motion.div>
+                </div>
+                {/* Shadows */}
                 <div
                   className={classNames(
-                    "p-8",
-                    inEditMode ? "border-b border-gray-200" : "border-none",
+                    "ani absolute rounded-xl p-10 border border-gray-300/50 top-3 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2 z-[1]",
+                    inEditMode
+                      ? "rotate-[1deg] -right-1 h-[calc(100%-19px)]"
+                      : "rotate-[3deg] -right-3 h-[calc(100%-19px)]",
                   )}
-                >
-                  <h3 className="text-2xl font-bold text-center">
-                    Let&apos;s make sure we&apos;ve got your business name and
-                    overview right before moving on.
-                  </h3>
-                </div>
-
-                {inEditMode ? (
-                  <CardEdit 
-                    setInEditMode={setInEditMode}
-                    businessName={businessName}
-                    setBusinessName={setBusinessName}
-                    businessPhone={businessPhone}
-                    setBusinessPhone={setBusinessPhone}
-                    businessOverview={businessOverview}
-                    setBusinessOverview={setBusinessOverview}
-                  />
-                ) : (
-                  <CardPreview 
-                    setInEditMode={setInEditMode}
-                    businessName={businessName}
-                    businessPhone={businessPhone}
-                    businessOverview={businessOverview}
-                  />
-                )}
+                />
+                <div
+                  className={classNames(
+                    "ani absolute rounded-xl p-10 border border-gray-300/50 top-6 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2  z-0 opacity-70",
+                    inEditMode
+                      ? "rotate-[2deg] -right-2 h-[calc(100%-33px)]"
+                      : "rotate-[5deg] -right-6 h-[calc(100%-33px)]",
+                  )}
+                />
               </div>
-              {/* X Shape - Top */}
-              <motion.div
-                layout
-                transition={{ type: "tween", duration: 0.25 }}
-                className={classNames(
-                  "absolute rounded-xl p-10 border border-gray-300/50 top-3 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2 z-[1]",
-                  inEditMode
-                    ? "rotate-[1deg] -right-1 h-[calc(100%-99px)]"
-                    : "rotate-[3deg] -right-3 h-[calc(100%-89px)]",
-                )}
-              />
-              <motion.div
-                layout
-                transition={{ type: "tween", duration: 0.25 }}
-                className={classNames(
-                  "absolute rounded-xl p-10 border border-gray-300/50 top-6 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2  z-0 opacity-70",
-                  inEditMode
-                    ? "rotate-[2deg] -right-2 h-[calc(100%-113px)]"
-                    : "rotate-[5deg] -right-6 h-[calc(100%-103px)]",
-                )}
-              />
 
               {/* Step Footer */}
               <div className="flex justify-between my-7 h-11">
@@ -120,7 +121,7 @@ export default function GuidedSetUp() {
                   </button>
                 )}
               </div>
-            </motion.div>
+            </LayoutGroup>
           </AnimatePresence>
         </div>
       </div>
@@ -128,47 +129,92 @@ export default function GuidedSetUp() {
   )
 }
 
-const CardPreview = ({ setInEditMode, businessName, businessPhone, businessOverview }) => {
+const CardPreview = ({
+  setInEditMode,
+  businessName,
+  businessPhone,
+  businessOverview,
+}) => {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }
+
   return (
     <>
       {/* Card body - Preview */}
-      <div className="min-h-28 flex items-center justify-center flex-col gap-3 px-8 py-5">
-        <div className="flex gap-4 w-full">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="min-h-28 flex items-center justify-center flex-col gap-3 px-8 py-5"
+      >
+        <motion.div variants={item} className="flex gap-4 w-full">
           <p className="w-1/3 text-gray-800 text-right">Business Name</p>
           <p className="w-2/3 text-black font-medium">{businessName}</p>
-        </div>
-        <div className="flex gap-4 w-full">
+        </motion.div>
+        <motion.div variants={item} className="flex gap-4 w-full">
           <p className="w-1/3 text-gray-800 text-right">Business Phone</p>
           <p className="w-2/3 text-black font-medium">{businessPhone}</p>
-        </div>
-        <div className="flex gap-4 w-full">
+        </motion.div>
+        <motion.div variants={item} className="flex gap-4 w-full">
           <p className="w-1/3 text-gray-800 text-right">Business Overview</p>
           <p className="w-2/3 text-black font-medium">{businessOverview}</p>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Card footer - Preview */}
-      <div className="flex justify-center px-8 pb-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="flex justify-center px-8 pb-8"
+      >
         <button
           onClick={() => setInEditMode(true)}
           className="bg-white hover:bg-gray-100 border border-gray-200 rounded-full px-5 py-2.5 text-gray-950 font-medium flex items-center gap-2 ani cursor-pointer"
         >
           Make Changes <PencilSquareIcon className="size-6" />
         </button>
-      </div>
+      </motion.div>
     </>
   )
 }
 
-const CardEdit = ({ 
-  setInEditMode, 
+const CardEdit = ({
+  setInEditMode,
   businessName,
   setBusinessName,
   businessPhone,
   setBusinessPhone,
   businessOverview,
-  setBusinessOverview 
+  setBusinessOverview,
 }) => {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 10 },
+    show: { opacity: 1, y: 0 }
+  }
+
   const handleSave = () => {
     // Here you can handle saving the data
     console.log({ businessName, businessPhone, businessOverview })
@@ -177,9 +223,14 @@ const CardEdit = ({
 
   return (
     <>
-      <div className="p-8">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="p-8"
+      >
         <div className="flex flex-col gap-3">
-          <div className="flex gap-5">
+          <motion.div variants={item} className="flex gap-5">
             <div className="flex items-center gap-1 w-52">
               <p className="text-black text-sm font-medium">Business Name</p>
               <QuestionMarkCircleIcon className="size-4 text-gray-500" />
@@ -193,8 +244,8 @@ const CardEdit = ({
                 placeholder="Enter your business name..."
               />
             </div>
-          </div>
-          <div className="flex gap-5">
+          </motion.div>
+          <motion.div variants={item} className="flex gap-5">
             <div className="flex items-center gap-1 w-52">
               <p className="text-black text-sm font-medium">Business Phone</p>
               <QuestionMarkCircleIcon className="size-4 text-gray-500" />
@@ -208,28 +259,31 @@ const CardEdit = ({
                 placeholder="(000) 000-0000"
               />
             </div>
-          </div>
-          <div className="flex gap-5 items-start">
+          </motion.div>
+          <motion.div variants={item} className="flex gap-5 items-start">
             <div className="flex items-center gap-1 w-52 h-12">
-              <p className="text-black text-sm font-medium">
-                Business Overview
-              </p>
+              <p className="text-black text-sm font-medium">Business Overview</p>
               <QuestionMarkCircleIcon className="size-4 text-gray-500" />
             </div>
             <div className="flex items-center gap-2 w-full">
               <textarea
                 value={businessOverview}
                 onChange={(e) => setBusinessOverview(e.target.value)}
-                className="w-full border border-gray-200 rounded-2xl  py-3 px-4 text-sm focus:outline-none h-32 resize-none"
+                className="w-full border border-gray-200 rounded-2xl py-3 px-4 text-sm focus:outline-none h-32 resize-none"
                 placeholder="Enter your business overview..."
               />
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Card footer - Edit Mode */}
-      <div className="flex justify-between p-6 border-t border-gray-200">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="flex justify-between p-6 border-t border-gray-200"
+      >
         <button
           onClick={() => setInEditMode(false)}
           className="bg-gray-100 rounded-full px-5 py-2.5 text-gray-950 font-medium flex items-center gap-2 hover:bg-gray-200 ani cursor-pointer"
@@ -242,7 +296,7 @@ const CardEdit = ({
         >
           Save Changes
         </button>
-      </div>
+      </motion.div>
     </>
   )
 }
