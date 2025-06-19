@@ -10,6 +10,9 @@ import { AnimatePresence, motion } from "motion/react"
 
 export default function GuidedSetUp() {
   const [inEditMode, setInEditMode] = useState(false)
+  const [businessName, setBusinessName] = useState("Gratia Bakery & Cafe")
+  const [businessPhone, setBusinessPhone] = useState("(555) 123-1234")
+  const [businessOverview, setBusinessOverview] = useState("Gratia Bakery & Cafe is a bakery and cafe that serves delicious pastries and coffee.")
 
   return (
     <div className="bg-gray-200 p-2.5 min-h-screen">
@@ -62,9 +65,22 @@ export default function GuidedSetUp() {
                 </div>
 
                 {inEditMode ? (
-                  <CardEdit setInEditMode={setInEditMode} />
+                  <CardEdit 
+                    setInEditMode={setInEditMode}
+                    businessName={businessName}
+                    setBusinessName={setBusinessName}
+                    businessPhone={businessPhone}
+                    setBusinessPhone={setBusinessPhone}
+                    businessOverview={businessOverview}
+                    setBusinessOverview={setBusinessOverview}
+                  />
                 ) : (
-                  <CardPreview setInEditMode={setInEditMode} />
+                  <CardPreview 
+                    setInEditMode={setInEditMode}
+                    businessName={businessName}
+                    businessPhone={businessPhone}
+                    businessOverview={businessOverview}
+                  />
                 )}
               </div>
               {/* X Shape - Top */}
@@ -112,25 +128,22 @@ export default function GuidedSetUp() {
   )
 }
 
-const CardPreview = ({ setInEditMode }) => {
+const CardPreview = ({ setInEditMode, businessName, businessPhone, businessOverview }) => {
   return (
     <>
       {/* Card body - Preview */}
       <div className="min-h-28 flex items-center justify-center flex-col gap-3 px-8 py-5">
         <div className="flex gap-4 w-full">
           <p className="w-1/3 text-gray-800 text-right">Business Name</p>
-          <p className="w-2/3 text-black font-medium">Gratia Bakery & Cafe</p>
+          <p className="w-2/3 text-black font-medium">{businessName}</p>
         </div>
         <div className="flex gap-4 w-full">
           <p className="w-1/3 text-gray-800 text-right">Business Phone</p>
-          <p className="w-2/3 text-black font-medium">(555) 123-1234</p>
+          <p className="w-2/3 text-black font-medium">{businessPhone}</p>
         </div>
         <div className="flex gap-4 w-full">
           <p className="w-1/3 text-gray-800 text-right">Business Overview</p>
-          <p className="w-2/3 text-black font-medium">
-            Gratia Bakery & Cafe is a bakery and cafe that serves delicious
-            pastries and coffee.
-          </p>
+          <p className="w-2/3 text-black font-medium">{businessOverview}</p>
         </div>
       </div>
 
@@ -147,7 +160,21 @@ const CardPreview = ({ setInEditMode }) => {
   )
 }
 
-const CardEdit = ({ setInEditMode }) => {
+const CardEdit = ({ 
+  setInEditMode, 
+  businessName,
+  setBusinessName,
+  businessPhone,
+  setBusinessPhone,
+  businessOverview,
+  setBusinessOverview 
+}) => {
+  const handleSave = () => {
+    // Here you can handle saving the data
+    console.log({ businessName, businessPhone, businessOverview })
+    setInEditMode(false)
+  }
+
   return (
     <>
       <div className="p-8">
@@ -160,6 +187,8 @@ const CardEdit = ({ setInEditMode }) => {
             <div className="flex items-center gap-2 w-full">
               <input
                 type="text"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
                 className="w-full border border-gray-200 rounded-full py-3 px-4 text-sm focus:outline-none"
                 placeholder="Enter your business name..."
               />
@@ -173,6 +202,8 @@ const CardEdit = ({ setInEditMode }) => {
             <div className="flex items-center gap-2 w-full">
               <input
                 type="text"
+                value={businessPhone}
+                onChange={(e) => setBusinessPhone(e.target.value)}
                 className="w-full border border-gray-200 rounded-full py-3 px-4 text-sm focus:outline-none"
                 placeholder="(000) 000-0000"
               />
@@ -187,6 +218,8 @@ const CardEdit = ({ setInEditMode }) => {
             </div>
             <div className="flex items-center gap-2 w-full">
               <textarea
+                value={businessOverview}
+                onChange={(e) => setBusinessOverview(e.target.value)}
                 className="w-full border border-gray-200 rounded-2xl  py-3 px-4 text-sm focus:outline-none h-32 resize-none"
                 placeholder="Enter your business overview..."
               />
@@ -204,7 +237,7 @@ const CardEdit = ({ setInEditMode }) => {
           Cancel
         </button>
         <button
-          onClick={() => setInEditMode(false)}
+          onClick={handleSave}
           className="bg-gradient-to-b from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer"
         >
           Save Changes
