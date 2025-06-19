@@ -1,12 +1,11 @@
 import { useState } from "react"
 import {
   ArrowRightIcon,
-  InformationCircleIcon,
   PencilSquareIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/solid"
 import { classNames } from "@/utils"
-import { AnimatePresence, LayoutGroup, motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 
 export default function GuidedSetUp() {
   const [inEditMode, setInEditMode] = useState(false)
@@ -46,83 +45,75 @@ export default function GuidedSetUp() {
           </div>
 
           {/* Cards */}
-          <AnimatePresence mode="wait">
-            <LayoutGroup id="card">
-              <div className="relative">
-                <div className="bg-white flex flex-col rounded-xl border border-gray-200 z-10 relative">
-                  {/* Card header */}
-                  <div
-                    className={classNames(
-                      "p-8 h-32 z-10 relative",
-                      inEditMode ? "border-b border-gray-200" : "border-none",
-                    )}
-                  >
-                    <h3 className="text-2xl font-bold text-center">
-                      Let&apos;s make sure we&apos;ve got your business name and
-                      overview right before moving on.
-                    </h3>
-                  </div>
-                  <motion.div
-                    layout
-                    transition={{ type: "tween", duration: 0.25 }}
-                    className="relative"
-                  >
-                    {inEditMode ? (
-                      <CardEdit
-                        setInEditMode={setInEditMode}
-                        businessName={businessName}
-                        setBusinessName={setBusinessName}
-                        businessPhone={businessPhone}
-                        setBusinessPhone={setBusinessPhone}
-                        businessOverview={businessOverview}
-                        setBusinessOverview={setBusinessOverview}
-                      />
-                    ) : (
-                      <CardPreview
-                        setInEditMode={setInEditMode}
-                        businessName={businessName}
-                        businessPhone={businessPhone}
-                        businessOverview={businessOverview}
-                      />
-                    )}
-                  </motion.div>
-                </div>
-                {/* Shadows */}
-                <div
-                  className={classNames(
-                    "ani absolute rounded-xl p-10 border border-gray-300/50 top-3 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2 z-[1]",
-                    inEditMode
-                      ? "rotate-[1deg] -right-1 h-[calc(100%-19px)]"
-                      : "rotate-[3deg] -right-3 h-[calc(100%-19px)]",
-                  )}
-                />
-                <div
-                  className={classNames(
-                    "ani absolute rounded-xl p-10 border border-gray-300/50 top-6 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2  z-0 opacity-70",
-                    inEditMode
-                      ? "rotate-[2deg] -right-2 h-[calc(100%-33px)]"
-                      : "rotate-[5deg] -right-6 h-[calc(100%-33px)]",
-                  )}
-                />
+          <div className="relative">
+            <div className="bg-white flex flex-col rounded-xl border border-gray-200 z-10 relative">
+              {/* Card header */}
+              <div
+                className={classNames(
+                  "p-8 h-32 z-10 relative",
+                  inEditMode ? "border-b border-gray-200" : "border-none",
+                )}
+              >
+                <h3 className="text-2xl font-bold text-center">
+                  Let&apos;s make sure we&apos;ve got your business name and
+                  overview right before moving on.
+                </h3>
               </div>
 
-              {/* Step Footer */}
-              <div className="flex justify-between my-7 h-11">
-                <div className="flex items-center gap-2">
-                  <p className="text-gray-600 text-sm font-medium">1/8</p>
-                  <div className="bg-gray-200 rounded-full p-0.5 w-[100px]">
-                    <div className="bg-purple-600 w-3 h-2 rounded-full" />
-                  </div>
-                </div>
-                {!inEditMode && (
-                  <button className="bg-gradient-to-b from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer">
-                    Continue{" "}
-                    <ArrowRightIcon className="size-5 text-purple-200" />
-                  </button>
+              <AnimatePresence mode="wait">
+                {inEditMode ? (
+                  <CardEdit
+                    setInEditMode={setInEditMode}
+                    businessName={businessName}
+                    setBusinessName={setBusinessName}
+                    businessPhone={businessPhone}
+                    setBusinessPhone={setBusinessPhone}
+                    businessOverview={businessOverview}
+                    setBusinessOverview={setBusinessOverview}
+                  />
+                ) : (
+                  <CardPreview
+                    setInEditMode={setInEditMode}
+                    businessName={businessName}
+                    businessPhone={businessPhone}
+                    businessOverview={businessOverview}
+                  />
                 )}
+              </AnimatePresence>
+            </div>
+            {/* Shadows */}
+            <div
+              className={classNames(
+                "ani absolute rounded-xl p-10 border border-gray-300/50 top-3 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2 z-[1]",
+                inEditMode
+                  ? "rotate-[1deg] -right-1 h-[calc(100%-19px)]"
+                  : "rotate-[3deg] -right-3 h-[calc(100%-19px)]",
+              )}
+            />
+            <div
+              className={classNames(
+                "ani absolute rounded-xl p-10 border border-gray-300/50 top-6 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2  z-0 opacity-70",
+                inEditMode
+                  ? "rotate-[2deg] -right-2 h-[calc(100%-33px)]"
+                  : "rotate-[5deg] -right-6 h-[calc(100%-33px)]",
+              )}
+            />
+          </div>
+
+          {/* Step Footer */}
+          <div className="flex justify-between my-7 h-11">
+            <div className="flex items-center gap-2">
+              <p className="text-gray-600 text-sm font-medium">1/8</p>
+              <div className="bg-gray-200 rounded-full p-0.5 w-[100px]">
+                <div className="bg-purple-600 w-3 h-2 rounded-full" />
               </div>
-            </LayoutGroup>
-          </AnimatePresence>
+            </div>
+            {!inEditMode && (
+              <button className="bg-gradient-to-b from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer">
+                Continue <ArrowRightIcon className="size-5 text-purple-200" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -136,7 +127,19 @@ const CardPreview = ({
   businessOverview,
 }) => {
   return (
-    <>
+    <motion.div
+      layout
+      transition={{
+        type: "tween",
+        duration: 0.25,
+        ease: "easeIn",
+      }}
+      className="relative"
+      initial={{ opacity: 0, height: "auto", overflow: "hidden" }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: "auto" }}
+      key="preview"
+    >
       {/* Card body - Preview */}
       <div className="min-h-28 flex items-center justify-center flex-col gap-3 px-8 py-5">
         <div className="flex gap-4 w-full">
@@ -162,7 +165,7 @@ const CardPreview = ({
           Make Changes <PencilSquareIcon className="size-6" />
         </button>
       </div>
-    </>
+    </motion.div>
   )
 }
 
@@ -182,7 +185,18 @@ const CardEdit = ({
   }
 
   return (
-    <>
+    <motion.div
+      layout
+      transition={{
+        type: "tween",
+        duration: 0.25,
+        ease: "easeOut",
+      }}
+      initial={{ opacity: 0, height: 0, overflow: "hidden" }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      key="edit"
+    >
       <div className="p-8">
         <div className="flex flex-col gap-3">
           <div className="flex gap-5">
@@ -249,6 +263,6 @@ const CardEdit = ({
           Save Changes
         </button>
       </div>
-    </>
+    </motion.div>
   )
 }
