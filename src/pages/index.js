@@ -1,19 +1,25 @@
+import Card from "@/components/Card"
 import { useState } from "react"
-import {
-  ArrowRightIcon,
-  PencilSquareIcon,
-  QuestionMarkCircleIcon,
-} from "@heroicons/react/24/solid"
-import { classNames } from "@/utils"
-import { AnimatePresence, motion } from "motion/react"
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid"
 
-export default function GuidedSetUp() {
+const GuidedSetUp = () => {
   const [inEditMode, setInEditMode] = useState(false)
-  const [businessName, setBusinessName] = useState("Gratia Bakery & Cafe")
-  const [businessPhone, setBusinessPhone] = useState("(555) 123-1234")
-  const [businessOverview, setBusinessOverview] = useState(
-    "Gratia Bakery & Cafe is a bakery and cafe that serves delicious pastries and coffee.",
-  )
+  const [currentStep, setCurrentStep] = useState(0)
+  const [direction, setDirection] = useState("next")
+
+  const handleNextStep = () => {
+    setDirection("next")
+    if (currentStep < cards.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const handlePreviousStep = () => {
+    setDirection("prev")
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
 
   return (
     <div className="bg-gray-200 p-2.5 min-h-screen">
@@ -45,71 +51,43 @@ export default function GuidedSetUp() {
           </div>
 
           {/* Cards */}
-          <div className="relative">
-            <div className="bg-white flex flex-col rounded-xl border border-gray-200 z-10 relative">
-              {/* Card header */}
-              <div
-                className={classNames(
-                  "p-8 h-32 z-10 relative",
-                  inEditMode ? "border-b border-gray-200" : "border-none",
-                )}
-              >
-                <h3 className="text-2xl font-bold text-center">
-                  Let&apos;s make sure we&apos;ve got your business name and
-                  overview right before moving on.
-                </h3>
-              </div>
-
-              <AnimatePresence mode="wait">
-                {inEditMode ? (
-                  <CardEdit
-                    setInEditMode={setInEditMode}
-                    businessName={businessName}
-                    setBusinessName={setBusinessName}
-                    businessPhone={businessPhone}
-                    setBusinessPhone={setBusinessPhone}
-                    businessOverview={businessOverview}
-                    setBusinessOverview={setBusinessOverview}
-                  />
-                ) : (
-                  <CardPreview
-                    setInEditMode={setInEditMode}
-                    businessName={businessName}
-                    businessPhone={businessPhone}
-                    businessOverview={businessOverview}
-                  />
-                )}
-              </AnimatePresence>
-            </div>
-            {/* Shadows */}
-            <div
-              className={classNames(
-                "ani absolute rounded-xl p-10 border border-gray-300/50 top-3 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2 z-[1]",
-                inEditMode
-                  ? "rotate-[1deg] -right-1 h-[calc(100%-19px)]"
-                  : "rotate-[3deg] -right-3 h-[calc(100%-19px)]",
-              )}
-            />
-            <div
-              className={classNames(
-                "ani absolute rounded-xl p-10 border border-gray-300/50 top-6 flex flex-col items-center bg-gradient-to-b from-gray-100 to-gray-200/50 w-1/2  z-0 opacity-70",
-                inEditMode
-                  ? "rotate-[2deg] -right-2 h-[calc(100%-33px)]"
-                  : "rotate-[5deg] -right-6 h-[calc(100%-33px)]",
-              )}
-            />
-          </div>
+          <Card
+            inEditMode={inEditMode}
+            setInEditMode={setInEditMode}
+            activeCard={cards[currentStep]}
+            currentStep={currentStep}
+            direction={direction}
+          />
 
           {/* Step Footer */}
-          <div className="flex justify-between my-7 h-11">
+          <div className="flex justify-between my-7 h-11 z-20 relative">
             <div className="flex items-center gap-2">
-              <p className="text-gray-600 text-sm font-medium">1/8</p>
+              <button
+                type="button"
+                onClick={handlePreviousStep}
+                className="bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:hover:bg-gray-100 rounded-full p-3 ani cursor-pointer mr-2 disabled:cursor-not-allowed disabled:text-gray-400"
+                disabled={currentStep === 0 || inEditMode}
+              >
+                <ArrowLeftIcon className="size-5" />
+              </button>
+
+              <p className="text-gray-600 text-sm font-medium w-6 text-right">
+                {currentStep + 1}/{cards.length}
+              </p>
               <div className="bg-gray-200 rounded-full p-0.5 w-[100px]">
-                <div className="bg-purple-600 w-3 h-2 rounded-full" />
+                <div
+                  className="bg-purple-600 h-2 rounded-full ani"
+                  style={{
+                    width: `${((currentStep + 1) / cards.length) * 100}%`,
+                  }}
+                />
               </div>
             </div>
-            {!inEditMode && (
-              <button className="bg-gradient-to-b from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer">
+            {!inEditMode && currentStep < cards.length - 1 && (
+              <button
+                onClick={handleNextStep}
+                className="bg-gradient-to-b from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer"
+              >
                 Continue <ArrowRightIcon className="size-5 text-purple-200" />
               </button>
             )}
@@ -120,149 +98,34 @@ export default function GuidedSetUp() {
   )
 }
 
-const CardPreview = ({
-  setInEditMode,
-  businessName,
-  businessPhone,
-  businessOverview,
-}) => {
-  return (
-    <motion.div
-      layout
-      transition={{
-        type: "tween",
-        duration: 0.25,
-        ease: "easeIn",
-      }}
-      className="relative"
-      initial={{ opacity: 0, height: "auto", overflow: "hidden" }}
-      animate={{ opacity: 1, height: "auto" }}
-      exit={{ opacity: 0, height: "auto" }}
-      key="preview"
-    >
-      {/* Card body - Preview */}
-      <div className="min-h-28 flex items-center justify-center flex-col gap-3 px-8 py-5">
-        <div className="flex gap-4 w-full">
-          <p className="w-1/3 text-gray-800 text-right">Business Name</p>
-          <p className="w-2/3 text-black font-medium">{businessName}</p>
-        </div>
-        <div className="flex gap-4 w-full">
-          <p className="w-1/3 text-gray-800 text-right">Business Phone</p>
-          <p className="w-2/3 text-black font-medium">{businessPhone}</p>
-        </div>
-        <div className="flex gap-4 w-full">
-          <p className="w-1/3 text-gray-800 text-right">Business Overview</p>
-          <p className="w-2/3 text-black font-medium">{businessOverview}</p>
-        </div>
-      </div>
+export default GuidedSetUp
 
-      {/* Card footer - Preview */}
-      <div className="flex justify-center px-8 pb-8">
-        <button
-          onClick={() => setInEditMode(true)}
-          className="bg-white hover:bg-gray-100 border border-gray-200 rounded-full px-5 py-2.5 text-gray-950 font-medium flex items-center gap-2 ani cursor-pointer"
-        >
-          Make Changes <PencilSquareIcon className="size-6" />
-        </button>
-      </div>
-    </motion.div>
-  )
-}
-
-const CardEdit = ({
-  setInEditMode,
-  businessName,
-  setBusinessName,
-  businessPhone,
-  setBusinessPhone,
-  businessOverview,
-  setBusinessOverview,
-}) => {
-  const handleSave = () => {
-    // Here you can handle saving the data
-    console.log({ businessName, businessPhone, businessOverview })
-    setInEditMode(false)
-  }
-
-  return (
-    <motion.div
-      layout
-      transition={{
-        type: "tween",
-        duration: 0.25,
-        ease: "easeOut",
-      }}
-      initial={{ opacity: 0, height: 0, overflow: "hidden" }}
-      animate={{ opacity: 1, height: "auto" }}
-      exit={{ opacity: 0, height: 0 }}
-      key="edit"
-    >
-      <div className="p-8">
-        <div className="flex flex-col gap-3">
-          <div className="flex gap-5">
-            <div className="flex items-center gap-1 w-52">
-              <p className="text-black text-sm font-medium">Business Name</p>
-              <QuestionMarkCircleIcon className="size-4 text-gray-500" />
-            </div>
-            <div className="flex items-center gap-2 w-full">
-              <input
-                type="text"
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-                className="w-full border border-gray-200 rounded-full py-3 px-4 text-sm focus:outline-none"
-                placeholder="Enter your business name..."
-              />
-            </div>
-          </div>
-          <div className="flex gap-5">
-            <div className="flex items-center gap-1 w-52">
-              <p className="text-black text-sm font-medium">Business Phone</p>
-              <QuestionMarkCircleIcon className="size-4 text-gray-500" />
-            </div>
-            <div className="flex items-center gap-2 w-full">
-              <input
-                type="text"
-                value={businessPhone}
-                onChange={(e) => setBusinessPhone(e.target.value)}
-                className="w-full border border-gray-200 rounded-full py-3 px-4 text-sm focus:outline-none"
-                placeholder="(000) 000-0000"
-              />
-            </div>
-          </div>
-          <div className="flex gap-5 items-start">
-            <div className="flex items-center gap-1 w-52 h-12">
-              <p className="text-black text-sm font-medium">
-                Business Overview
-              </p>
-              <QuestionMarkCircleIcon className="size-4 text-gray-500" />
-            </div>
-            <div className="flex items-center gap-2 w-full">
-              <textarea
-                value={businessOverview}
-                onChange={(e) => setBusinessOverview(e.target.value)}
-                className="w-full border border-gray-200 rounded-2xl  py-3 px-4 text-sm focus:outline-none h-32 resize-none"
-                placeholder="Enter your business overview..."
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Card footer - Edit Mode */}
-      <div className="flex justify-between p-6 border-t border-gray-200">
-        <button
-          onClick={() => setInEditMode(false)}
-          className="bg-gray-100 rounded-full px-5 py-2.5 text-gray-950 font-medium flex items-center gap-2 hover:bg-gray-200 ani cursor-pointer"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleSave}
-          className="bg-gradient-to-b from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer"
-        >
-          Save Changes
-        </button>
-      </div>
-    </motion.div>
-  )
-}
+const cards = [
+  {
+    title:
+      "Let's make sure we've got your business name and overview right before moving on.",
+  },
+  {
+    title:
+      "Here are the core services we've got for your business. Does this look right?",
+  },
+  {
+    title:
+      "Enable call notifications to get alerted when someone contacts your business.",
+  },
+  {
+    title: "Give your agent a name so they feel like part of your team.",
+  },
+  {
+    title:
+      "Make a great first impression. Personalize your agent's call greeting.",
+  },
+  {
+    title:
+      "When taking a message, would you like to add custom questions to gather more details?",
+  },
+  {
+    title:
+      "Add FAQs about your business so your agent can handle common questions automatically.",
+  },
+]

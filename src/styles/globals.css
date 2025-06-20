@@ -38,5 +38,5 @@ html, body {
 }
 
 .ani {
-  transition: all 150ms ease-in-out;
+  transition: all 250ms ease-in-out;
 }
