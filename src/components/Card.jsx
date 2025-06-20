@@ -145,18 +145,20 @@ const CardContentPreview = ({
       key="preview"
     >
       {/* Card body - Preview */}
-      <div className="min-h-28 flex items-center justify-center flex-col gap-3 px-8 py-5">
-        <div className="flex gap-4 w-full">
-          <p className="w-1/3 text-gray-800 text-right">Business Name</p>
-          <p className="w-2/3 text-black font-medium">{businessName}</p>
+      <div className="min-h-28 flex items-center justify-center flex-col gap-3 px-8 sm:py-5 pb-5">
+        <div className="flex sm:gap-4 w-full flex-col sm:flex-row">
+          <p className="sm:w-1/3 text-gray-800 sm:text-right">Business Name</p>
+          <p className="sm:w-2/3 text-black font-medium">{businessName}</p>
         </div>
-        <div className="flex gap-4 w-full">
-          <p className="w-1/3 text-gray-800 text-right">Business Phone</p>
-          <p className="w-2/3 text-black font-medium">{businessPhone}</p>
+        <div className="flex sm:gap-4 w-full flex-col sm:flex-row">
+          <p className="sm:w-1/3 text-gray-800 sm:text-right">Business Phone</p>
+          <p className="sm:w-2/3 text-black font-medium">{businessPhone}</p>
         </div>
-        <div className="flex gap-4 w-full">
-          <p className="w-1/3 text-gray-800 text-right">Business Overview</p>
-          <p className="w-2/3 text-black font-medium">{businessOverview}</p>
+        <div className="flex sm:gap-4 w-full flex-col sm:flex-row">
+          <p className="sm:w-1/3 text-gray-800 sm:text-right">
+            Business Overview
+          </p>
+          <p className="sm:w-2/3 text-black font-medium">{businessOverview}</p>
         </div>
       </div>
 
@@ -201,9 +203,9 @@ const CardContentEdit = ({
       key="edit"
     >
       <div className="p-8">
-        <div className="flex flex-col gap-3">
-          <div className="flex gap-5">
-            <div className="flex items-center gap-1 w-52">
+        <div className="flex flex-col gap-5 sm:gap-3">
+          <div className="flex gap-2 sm:gap-5 flex-col sm:flex-row">
+            <div className="flex items-center gap-1 w-full sm:w-52">
               <p className="text-black text-sm font-medium">Business Name</p>
               <QuestionMarkCircleIcon className="size-4 text-gray-500" />
             </div>
@@ -217,8 +219,8 @@ const CardContentEdit = ({
               />
             </div>
           </div>
-          <div className="flex gap-5">
-            <div className="flex items-center gap-1 w-52">
+          <div className="flex gap-2 sm:gap-5 flex-col sm:flex-row">
+            <div className="flex items-center gap-1 w-full sm:w-52">
               <p className="text-black text-sm font-medium">Business Phone</p>
               <QuestionMarkCircleIcon className="size-4 text-gray-500" />
             </div>
@@ -232,8 +234,8 @@ const CardContentEdit = ({
               />
             </div>
           </div>
-          <div className="flex gap-5 items-start">
-            <div className="flex items-center gap-1 w-52 h-12">
+          <div className="flex gap-2 sm:gap-5 items-start flex-col sm:flex-row">
+            <div className="flex items-center gap-1 w-full sm:w-52 sm:h-12">
               <p className="text-black text-sm font-medium">
                 Business Overview
               </p>

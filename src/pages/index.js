@@ -65,7 +65,7 @@ const GuidedSetUp = () => {
               <button
                 type="button"
                 onClick={handlePreviousStep}
-                className="bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:hover:bg-gray-100 rounded-full p-3 ani cursor-pointer mr-2 disabled:cursor-not-allowed disabled:text-gray-400"
+                className="bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:hover:bg-gray-100 rounded-full p-3 ani cursor-pointer sm:mr-2 disabled:cursor-not-allowed disabled:text-gray-400"
                 disabled={currentStep === 0 || inEditMode}
               >
                 <ArrowLeftIcon className="size-5" />
@@ -74,7 +74,7 @@ const GuidedSetUp = () => {
               <p className="text-gray-600 text-sm font-medium w-6 text-right">
                 {currentStep + 1}/{cards.length}
               </p>
-              <div className="bg-gray-200 rounded-full p-0.5 w-[100px]">
+              <div className="bg-gray-200 rounded-full p-0.5 w-16 sm:w-28">
                 <div
                   className="bg-purple-600 h-2 rounded-full ani"
                   style={{
