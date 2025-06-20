@@ -45,7 +45,7 @@ const Card = ({
   }
   return (
     <div className="relative">
-      <AnimatePresence mode="wait" initial={false} custom={direction}>
+      <AnimatePresence mode="popLayout" initial={false} custom={direction}>
         <motion.div
           layout
           key={currentStep}
