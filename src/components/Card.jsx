@@ -73,7 +73,7 @@ const Card = ({
                   inEditMode ? "border-b border-gray-200" : "border-none",
                 )}
               >
-                <h3 className="text-2xl font-bold text-center">
+                <h3 className="text-2xl font-bold sm:text-center">
                   {activeCard.title}
                 </h3>
               </motion.div>
