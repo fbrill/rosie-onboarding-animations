@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
-import { classNames } from "@/utils"
+import { classNames, useMediaQuery } from "@/utils"
 import {
   PencilSquareIcon,
   QuestionMarkCircleIcon,
@@ -14,6 +14,7 @@ const Card = ({
   currentStep,
   direction,
 }) => {
+  const isDesktop = useMediaQuery("(min-width: 768px)")
   const [businessName, setBusinessName] = useState("Gratia Bakery & Cafe")
   const [businessPhone, setBusinessPhone] = useState("(555) 123-1234")
   const [businessOverview, setBusinessOverview] = useState(
@@ -23,9 +24,9 @@ const Card = ({
   const variants = {
     enter: (direction) => {
       return {
-        x: direction === "next" ? 50 : -50,
+        x: isDesktop && direction === "next" ? 50 : isDesktop ? -50 : 0,
         opacity: 0,
-        rotate: direction === "next" ? 3 : -3,
+        rotate: isDesktop && direction === "next" ? 3 : isDesktop ? -3 : 0,
       }
     },
     center: {
@@ -37,9 +38,9 @@ const Card = ({
     exit: (direction) => {
       return {
         zIndex: 0,
-        x: direction === "next" ? -50 : 50,
+        x: isDesktop && direction === "next" ? -50 : isDesktop ? 50 : 0,
         opacity: 0,
-        rotate: direction === "next" ? 3 : -3,
+        rotate: isDesktop && direction === "next" ? 3 : isDesktop ? -3 : 0,
       }
     },
   }
@@ -54,11 +55,17 @@ const Card = ({
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            rotate: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 },
-          }}
+          transition={
+            isDesktop
+              ? {
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  rotate: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }
+              : {
+                  opacity: { duration: 0.2 },
+                }
+          }
           className="origin-bottom"
         >
           <div className="bg-white flex flex-col rounded-xl border border-gray-200 z-10 relative">
