@@ -191,10 +191,15 @@ const CardContentEdit = ({
   businessOverview,
   setBusinessOverview,
 }) => {
+  const [saving, setSaving] = useState(false)
   const handleSave = () => {
+    setSaving(true)
+    setTimeout(() => {
+      setSaving(false)
+      setInEditMode(false)
+    }, 700)
     // Here you can handle saving the data
     console.log({ businessName, businessPhone, businessOverview })
-    setInEditMode(false)
   }
 
   return (
@@ -265,14 +270,43 @@ const CardContentEdit = ({
         <button
           onClick={() => setInEditMode(false)}
           className="bg-gray-100 rounded-full px-5 py-2.5 text-gray-950 font-medium flex items-center gap-2 hover:bg-gray-200 ani cursor-pointer"
+          disabled={saving}
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className="bg-gradient-to-b from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer"
+          className="bg-gradient-to-b min-w-36 text-center from-[#E66464]/25 bg-purple-600 hover:bg-purple-800 text-white rounded-full px-5 py-2.5 font-medium flex items-center gap-2 ani cursor-pointer"
+          disabled={saving}
         >
-          Save Changes
+          {saving ? (
+            <>
+              <svg className="animate-spin h-5 w-5 mr-1" viewBox="0 0 24 24">
+                {/* Outer static circle */}
+                <circle
+                  className="opacity-20"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="white"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                {/* Rotating arc */}
+                <path
+                  className="opacity-50"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  d="M12 2a10 10 0 0 1 0 20"
+                />
+              </svg>
+              Saving...
+            </>
+          ) : (
+            <>Save Changes</>
+          )}
         </button>
       </div>
     </motion.div>
